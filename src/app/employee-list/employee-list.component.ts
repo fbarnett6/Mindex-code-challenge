@@ -3,6 +3,7 @@ import {catchError, map, reduce} from 'rxjs/operators';
 
 import {Employee} from '../employee';
 import {EmployeeService} from '../employee.service';
+import {ModalService} from '../modal';
 
 @Component({
   selector: 'app-employee-list',
@@ -13,7 +14,7 @@ export class EmployeeListComponent implements OnInit {
   employees: Employee[] = [];
   errorMessage: string;
 
-  constructor(private employeeService: EmployeeService) {
+  constructor(private employeeService: EmployeeService, private modalService: ModalService) {
   }
 
   ngOnInit(): void {
@@ -23,6 +24,26 @@ export class EmployeeListComponent implements OnInit {
         map(emps => this.employees = emps),
         catchError(this.handleError.bind(this))
       ).subscribe();
+  }
+
+  deleteReport(employee, sub):void{
+    // if(confirm("Delete "+employee.firstName+" "+employee.lastName+"?")){
+      for(var i=0; i<sub.length; i++){
+        if(sub[i].id == employee.id){
+          sub.splice(i, 1);
+        }
+      }
+      this.closeModal('deleteReport');
+    // this.closeModal('deleteReport');  
+  }
+
+  openModal(id: string, emp) {
+    // this.emp = {id: emp.id, firstName: emp.firstName, lastName: emp.lastName, position: emp.positon};
+    this.modalService.open(id, emp);
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id);
   }
 
   private handleError(e: Error | any): string {

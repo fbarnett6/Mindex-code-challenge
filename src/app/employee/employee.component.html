@@ -1,12 +1,44 @@
 <mat-card class="employee">
   <mat-card-header>
-    <mat-card-title>{{employee.lastName}}, {{employee.firstName}}</mat-card-title>
-    <mat-card-subtitle>{{employee.id}}</mat-card-subtitle>
+    <mat-card-title>{{employee.firstName}} {{employee.lastName}}, {{employee.position}}</mat-card-title>
+    <mat-card-subtitle>Employee ID: {{employee.id}}</mat-card-subtitle>
+    <mat-card-subtitle>Direct Reports: {{directReports}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <dl>
-      <dt>Job Title</dt>
-      <dd>{{employee.position}}</dd>
+      <dt>Direct Reports:</dt>
+      <dd *ngIf="!sub || sub.length === 0"><span>This employee has no reports.</span></dd>
+      <dd *ngFor="let emp of sub">
+        <span>{{emp.firstName}} {{emp.lastName}}, {{emp.position}}</span> 
+        <a [routerLink]="" (click)="openModal('deleteReport', emp)">
+          <i class="material-icons">delete</i>
+        </a>
+        <a [routerLink]="" (click)="openModal('editReport', emp)">
+          <i class="material-icons">create</i>
+        </a>
+        <jw-modal id="editReport">
+          <center><h1>UPDATE COMPENSATION</h1></center>
+          <form>
+              <label for="firstName">first name</label>
+              <input type="text" id="firstName">
+              <label for="lastName">last name</label>
+              <input type="text" id="lastName">
+              <label for="Title">Title</label>
+              <input type="text" id="Title">
+              <label for="Compensation">Compensation</label>
+              <input type="text" id="Compensation">
+              <button class="saveBtn">SAVE</button>
+              <button class="cancelBtn" (click)="closeModal('editReport')">CANCEL</button>
+          </form>
+        </jw-modal>        
+        <jw-modal id="deleteReport">
+          <center><h1>DELETE DIRECT REPORT</h1></center>
+          <p>Permanetly delete direct report for {{emp.firstName}} {{emp.lastName}}?</p>
+          <p>This action cannot be undone.</p>
+          <button class="saveBtn" (click)="deleteReport(emp)">OK</button>
+          <button class="cancelBtn" (click)="closeModal('deleteReport')">CANCEL</button>
+        </jw-modal>
+      </dd>
     </dl>
   </mat-card-content>
 </mat-card>
