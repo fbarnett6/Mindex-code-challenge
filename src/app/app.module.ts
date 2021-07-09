@@ -16,14 +16,12 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { NgbdModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EmployeeComponent,
     EmployeeListComponent,
-    NgbdModalComponent,
   ],
   imports: [
     BrowserModule,

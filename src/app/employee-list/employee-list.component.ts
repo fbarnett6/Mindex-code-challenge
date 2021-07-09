@@ -26,7 +26,6 @@ export class EmployeeListComponent implements OnInit {
   }
 
   deleteReport(employee, sub):void{
-    // if(confirm("Delete "+employee.firstName+" "+employee.lastName+"?")){
       for(var i=0; i<sub.length; i++){
         if(sub[i].id == employee.id){
           sub.splice(i, 1);

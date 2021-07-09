@@ -14,25 +14,15 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 export class EmployeeComponent implements OnInit{
 
   @Input() employee: Employee;
-  employees: Employee[];
   directReports = 0;
   directReportsArr = [];
   directReportsArrName = []
-  firstName = '';
-  lastName = '';
   private sub:any[];
   emp;
 
-	// GetEmployee(): void{
-  //   this.employeeservice.getAll().subscribe(employees => employees = employees);
-  // };
-
   constructor(private employeeservice : EmployeeService, private employeeList: EmployeeListComponent, private modalService: NgbModal){}
 
-
-  //setup field to get number of employees
-  //get employee.directReports length
-  //also we need to store these employees somewhere to display later
+  //get direct reports and number of direct reports
   ngOnInit(){
     this.sub = [];
     //this.GetEmployee();
@@ -42,44 +32,34 @@ export class EmployeeComponent implements OnInit{
     } else {
       this.directReports = this.employee.directReports.length;
       this.directReportsArr = this.employee.directReports;
-      //this.directReportsArrName = [this.employee.firstName, this.employee.lastName];
-      //now that we have directReports containing id # of each employee
-      //we can utilize that to get the names and positions of these employees by id
-      // this.employeeservice.getAll().subscribe(employees => { this.employee = employees;
-      //   for(let emp of this.employees){
-      //     if(emp.id == this.employee.id){
-      //       this.directReportsArrName.push(this.employee.firstName);
-      //     }
-      //   }
-      // });
       
+      //setup array of employees
       for(var i=0; i<this.directReports; i++){
-        // this.employeeservice.get(this.directReportsArr[i]).subscribe(data => console.log(JSON.stringify(data)));
-        // console.log(JSON.stringify(this.sub));
         this.employeeservice.get(this.directReportsArr[i]).subscribe((data) => {
           this.sub.push(data);
-          console.log(this.sub);
-          // this.subs = data;
-          // console.log(this.subs);
         });
       }
     }
   }
   
+  //open modal
   open(content, employee){
     this.emp = employee;
     this.modalService.open(content, employee);
   }
 
+  //close modal
   close(){
     this.modalService.dismissAll();
   }
 
+  //delete report and close modal
   deleteReport(employee):void{
     this.employeeList.deleteReport(employee, this.sub);
     this.close();
   }
 
+  //edit report compensation and close modal
   editReport(employee, compensation){
     this.employeeList.editReport(employee, this.sub, compensation);
     this.close();
