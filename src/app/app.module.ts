@@ -15,13 +15,15 @@ import {MatInputModule} from '@angular/material/input';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import { ModalModule } from './modal';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbdModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EmployeeComponent,
     EmployeeListComponent,
+    NgbdModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,7 @@ import { ModalModule } from './modal';
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
-    ModalModule
+    NgbModule,
   ],
   providers: [EmployeeService],
   bootstrap: [AppComponent]

@@ -1,7 +1,8 @@
 import {async, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
-
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import {EmployeeComponent} from './employee.component';
+import {NgbdModalComponentModule} from '../modal/modal.component.module';
 
 @Component({selector: 'app-mat-card', template: ''})
 class CardComponent {
@@ -22,6 +23,16 @@ class CardSubtitleComponent {
 @Component({selector: 'app-mat-card-content', template: ''})
 class CardContentComponent {
 }
+
+platformBrowserDynamic()
+  .bootstrapModule(NgbdModalComponentModule)
+  .then(ref => {
+    if(window['ngRef']){
+      window['ngRef'].destroy();
+    }
+    window['ngRef'] = ref;
+  })
+  .catch(err => console.log(err));
 
 const employeeServiceSpy = jasmine.createSpyObj('EmployeeService', ['getAll', 'get', 'save', 'remove']);
 

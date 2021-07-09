@@ -4,7 +4,7 @@ import { first } from 'rxjs/operators';
 import {Employee} from '../employee';
 import { EmployeeListComponent } from '../employee-list/employee-list.component';
 import {EmployeeService} from '../employee.service';
-import { ModalService } from '../modal';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-employee',
@@ -27,7 +27,7 @@ export class EmployeeComponent implements OnInit{
   //   this.employeeservice.getAll().subscribe(employees => employees = employees);
   // };
 
-  constructor(private employeeservice : EmployeeService, private modalService: ModalService, private employeeList: EmployeeListComponent){}
+  constructor(private employeeservice : EmployeeService, private employeeList: EmployeeListComponent, private modalService: NgbModal){}
 
 
   //setup field to get number of employees
@@ -66,22 +66,22 @@ export class EmployeeComponent implements OnInit{
     }
   }
   
+  open(content, employee){
+    this.emp = employee;
+    this.modalService.open(content, employee);
+  }
+
+  close(){
+    this.modalService.dismissAll();
+  }
 
   deleteReport(employee):void{
     this.employeeList.deleteReport(employee, this.sub);
+    this.close();
   }
 
-  editReport(){
-    console.log('edit');
-  }
-
-  openModal(id: string, emp) {
-    // this.emp = {id: emp.id, firstName: emp.firstName, lastName: emp.lastName, position: emp.positon};
-    this.modalService.open(id, emp);
-    console.log(emp);
-  }
-
-  closeModal(id: string) {
-    this.modalService.close(id);
+  editReport(employee, compensation){
+    this.employeeList.editReport(employee, this.sub, compensation);
+    this.close();
   }
 }

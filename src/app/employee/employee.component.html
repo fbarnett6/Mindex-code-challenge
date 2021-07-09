@@ -10,35 +10,43 @@
       <dd *ngIf="!sub || sub.length === 0"><span>This employee has no reports.</span></dd>
       <dd *ngFor="let emp of sub">
         <span>{{emp.firstName}} {{emp.lastName}}, {{emp.position}}</span> 
-        <a [routerLink]="" (click)="openModal('deleteReport', emp)">
+        <a [routerLink]="" (click)="open(delete, emp)">
           <i class="material-icons">delete</i>
         </a>
-        <a [routerLink]="" (click)="openModal('editReport', emp)">
-          <i class="material-icons">create</i>
+        <a [routerLink]="" (click)="open(edit, emp)">
+            <i class="material-icons">create</i>
         </a>
-        <jw-modal id="editReport">
-          <center><h1>UPDATE COMPENSATION</h1></center>
-          <form>
-              <label for="firstName">first name</label>
-              <input type="text" id="firstName">
-              <label for="lastName">last name</label>
-              <input type="text" id="lastName">
-              <label for="Title">Title</label>
-              <input type="text" id="Title">
-              <label for="Compensation">Compensation</label>
-              <input type="text" id="Compensation">
-              <button class="saveBtn">SAVE</button>
-              <button class="cancelBtn" (click)="closeModal('editReport')">CANCEL</button>
-          </form>
-        </jw-modal>        
-        <jw-modal id="deleteReport">
-          <center><h1>DELETE DIRECT REPORT</h1></center>
-          <p>Permanetly delete direct report for {{emp.firstName}} {{emp.lastName}}?</p>
-          <p>This action cannot be undone.</p>
-          <button class="saveBtn" (click)="deleteReport(emp)">OK</button>
-          <button class="cancelBtn" (click)="closeModal('deleteReport')">CANCEL</button>
-        </jw-modal>
       </dd>
     </dl>
   </mat-card-content>
 </mat-card>
+<ng-template #edit let-modal>
+  <div class="modal-header" id="editReport">
+      <center><h1 class="editModalTitle">UPDATE COMPENSATION</h1></center>
+  </div>
+  <div class="modal-body">
+      <form>
+          <label for="firstName">first name</label>
+          <input type="text" id="firstName" value="{{emp.firstName}}" disabled="disabled">
+          <label for="lastName">last name</label>
+          <input type="text" id="lastName" value="{{emp.lastName}}" disabled="disabled">
+          <label for="Title">Title</label>
+          <input type="text" id="Title" value="{{emp.position}}" disabled="disabled">
+          <label for="Compensation">Compensation</label>
+          <span class="comp"><input class="compInput" type="number" id="Compensation" value="{{emp.compensation}}" #compensation></span>
+          <button class="saveBtn" (click)="editReport(emp, compensation.value)">SAVE</button>
+          <button class="cancelBtn" (click)="modal.close('edit')">CANCEL</button>
+      </form>
+  </div>
+</ng-template>
+<ng-template #delete let-modal>
+  <div class="modal-header" id="editReport">
+      <center><h1 class="editModalTitle">DELETE DIRECT REPORT</h1></center>
+  </div>
+  <div class="modal-body">
+      <center><p>Permanetly delete direct report for {{emp.firstName}} {{emp.lastName}}?</p></center>
+      <center><i><b>This action cannot be undone.</b></i></center>
+      <button class="saveBtn" (click)="deleteReport(emp)">OK</button>
+      <button class="cancelBtn" (click)="modal.close('delete')">CANCEL</button>
+  </div>
+</ng-template>
