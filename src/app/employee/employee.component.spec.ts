@@ -1,6 +1,6 @@
 import {async, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
-
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import {EmployeeComponent} from './employee.component';
 
 @Component({selector: 'app-mat-card', template: ''})
@@ -46,7 +46,8 @@ describe('EmployeeComponent', () => {
       id: 1,
       firstName: 'first',
       lastName: 'last',
-      position: 'jobTitle'
+      position: 'jobTitle',
+      compensation: 'compensation'
     };
 
     expect(comp).toBeTruthy();
