@@ -25,6 +25,7 @@ export class EmployeeListComponent implements OnInit {
       ).subscribe();
   }
 
+  //loop through directReports until we find id of employee we want to delete
   deleteReport(employee, sub):void{
       for(var i=0; i<sub.length; i++){
         if(sub[i].id == employee.id){
@@ -33,13 +34,11 @@ export class EmployeeListComponent implements OnInit {
       }
   }
 
+  //loop through directReports until we find id of employee we want to edit
   editReport(employee, sub, compensation){
-    console.log(compensation);
     for(var i=0; i<sub.length; i++){
       if(sub[i].id == employee.id){
-        console.log(sub[i].compensation);
         sub[i].compensation = compensation;
-        console.log(sub[i].compensation);
       }
     }
   }

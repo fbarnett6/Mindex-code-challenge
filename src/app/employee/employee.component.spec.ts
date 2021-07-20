@@ -2,6 +2,10 @@ import {async, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import {EmployeeComponent} from './employee.component';
+import {EmployeeService} from '../employee.service';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {EmployeeListComponent} from '../employee-list/employee-list.component';
+import { compileComponentFromMetadata } from '@angular/compiler';
 
 @Component({selector: 'app-mat-card', template: ''})
 class CardComponent {
@@ -28,6 +32,8 @@ const employeeServiceSpy = jasmine.createSpyObj('EmployeeService', ['getAll', 'g
 describe('EmployeeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      providers: [EmployeeService, EmployeeListComponent],
+      imports: [HttpClientTestingModule],
       declarations: [
         EmployeeComponent,
         CardComponent,
@@ -47,6 +53,7 @@ describe('EmployeeComponent', () => {
       firstName: 'first',
       lastName: 'last',
       position: 'jobTitle',
+      directReports: [1,2],
       compensation: 'compensation'
     };
 

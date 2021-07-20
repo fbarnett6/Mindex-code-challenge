@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 import {Employee} from '../employee';
@@ -11,29 +11,32 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.css']
 })
+
 export class EmployeeComponent implements OnInit{
 
   @Input() employee: Employee;
+  @Output() newEvent = new EventEmitter();
+
   directReports = 0;
   directReportsArr = [];
-  directReportsArrName = []
   private sub:any[];
   emp;
+
 
   constructor(private employeeservice : EmployeeService, private employeeList: EmployeeListComponent, private modalService: NgbModal){}
 
   //get direct reports and number of direct reports
   ngOnInit(){
     this.sub = [];
-    //this.GetEmployee();
-    // this.employees.push(this.employee);
+
+    //since directReports is an optional property, check if undefined
+    //if undefined, there are no directReports, else get length of directReports array and place id's in array
     if(this.employee.directReports === undefined){
       this.directReports = 0; 
     } else {
       this.directReports = this.employee.directReports.length;
       this.directReportsArr = this.employee.directReports;
-      
-      //setup array of employees
+      //setup array of directReports
       for(var i=0; i<this.directReports; i++){
         this.employeeservice.get(this.directReportsArr[i]).subscribe((data) => {
           this.sub.push(data);
@@ -45,7 +48,7 @@ export class EmployeeComponent implements OnInit{
   //open modal
   open(content, employee){
     this.emp = employee;
-    this.modalService.open(content, employee);
+    this.modalService.open(content);
   }
 
   //close modal
@@ -53,9 +56,10 @@ export class EmployeeComponent implements OnInit{
     this.modalService.dismissAll();
   }
 
-  //delete report and close modal
+  //delete report, update number of directReports, and close modal
   deleteReport(employee):void{
     this.employeeList.deleteReport(employee, this.sub);
+    this.directReports = this.sub.length;
     this.close();
   }
 
